@@ -4,12 +4,13 @@ rescue LoadError
 end
 
 require 'thor'
+require 'frank-cucumber/sdk_helper'
 require 'frank-cucumber/launcher'
 require 'frank-cucumber/console'
 require 'frank-cucumber/frankifier'
 require 'frank-cucumber/plugins/plugin'
 
-module Frank
+module Frank module CLI
   class CLI < Thor
     include Thor::Actions
     include Frank::Cucumber::Launcher
@@ -168,9 +169,10 @@ module Frank
     method_option :debug, :type => :boolean, :default => false
     method_option :idiom, :banner => 'iphone|ipad', :type => :string, :default => (ENV['FRANK_SIM_IDIOM'] || 'iphone')
     method_option :sdk, :type => :string, :default => nil
+    method_option :deviceTypeId, :type => :string, :default => nil
     def launch
       $DEBUG = options[:debug]
-      version = case options[:idiom].downcase
+      family = case options[:idiom].downcase
       when 'iphone'
         'iphone'
       when 'ipad'
@@ -189,7 +191,7 @@ module Frank
 
         say "LAUNCHING APP..."
 
-        launch_app(frankified_app_dir, options[:sdk], version, false)
+		launch_app(frankified_app_dir, :sdk => options[:sdk], :device_identifier => options[:deviceTypeId], :family => family)
       end
     end
 
@@ -221,7 +223,12 @@ module Frank
       if console.check_for_running_app
         console.pry
       end
-    end
+	end
+
+	desc 'showdevicetypes', "show the allowed device types"
+	def showdevicetypes
+		SdkHelper.new.show_device_types
+	end
 
     desc "authorize", "Permanently authorize your frankified app, and all apps with the same bundle identifier, to use the Mac accessibility API on 10.9 or later. Requires administrator privileges."
     def authorize
@@ -303,5 +310,5 @@ module Frank
     end
 
   end
-end
+end end
 

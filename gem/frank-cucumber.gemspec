@@ -22,7 +22,7 @@ Gem::Specification.new do |s|
 
   s.add_dependency( "cucumber", ["~>1.3.10"] )
   s.add_dependency( "rspec", ["~>2.14.1"] )
-  s.add_dependency( "sim_launcher", ["~>0.4.6"] )
+  s.add_dependency( "sim_launcher", ["~>0.4.12"] )
   s.add_dependency( "i18n", ["~>0.6.9"] )
   s.add_dependency( "plist", ["~>3.1.0"] )
   s.add_dependency( "json", ["1.8.1"] ) # TODO: figure out how to be more permissive as to which JSON gems we allow
